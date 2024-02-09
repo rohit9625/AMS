@@ -7,7 +7,7 @@ export default function login() {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
-    email: "",
+    userID: "",
     password: "",
   });
 
@@ -27,7 +27,7 @@ export default function login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
+    if (!formData.userID || !formData.password) {
       setErrorMsg("*Please fill all details");
       console.log(errorMsg);
       return;
@@ -36,7 +36,7 @@ export default function login() {
     }
 
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("/api/faculty_login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,17 +78,17 @@ export default function login() {
               htmlFor="email"
               className="block text-xs font-semibold text-gray-600"
             >
-              Email:
+              User ID:
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.name}
+              type="text"
+              id="userID"
+              name="userID"
+              value={formData.userID}
               onChange={handleChange}
               autoComplete="off"
               className="w-full mt-1 p-2 border rounded-md focus:outline-2 outline-cyan-200"
-              placeholder="Enter your email"
+              placeholder="Enter User ID"
             />
           </div>
           <div className="mb-4">
@@ -106,7 +106,7 @@ export default function login() {
               onChange={handleChange}
               autoComplete="off"
               className="w-full mt-1 p-2 border rounded-md outline-cyan-200"
-              placeholder="Enter your password"
+              placeholder="Enter Your Password"
             />
           </div>
           <p className="text-sm my-4">

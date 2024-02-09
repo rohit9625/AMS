@@ -28,9 +28,11 @@ export default async function handler(req, res) {
           "INSERT INTO coordinator (name, email, phone, password) VALUES (?,?,?,?)",
           [name, email, phone, hashedPassword]
         );
-
-        const userID = result.insertId;
-        const token = jwt.sign({name, email}, process.env.MY_SECRET); // Signing token
+        
+        const token = jwt.sign(
+          { name: user.name, email: user.email, userType: "coordinator" },
+          process.env.MY_SECRET
+        );
         
         res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; Expires=${new Date(Date.now() + 24 * 60 * 60 * 1000).toUTCString()}`);
         

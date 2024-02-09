@@ -7,8 +7,7 @@ export default function login() {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    roll_no: ""
   });
 
   function triggerLoader() {
@@ -27,7 +26,7 @@ export default function login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
+    if (!formData.roll_no) {
       setErrorMsg("*Please fill all details");
       console.log(errorMsg);
       return;
@@ -36,7 +35,7 @@ export default function login() {
     }
 
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("/api/student_login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +66,7 @@ export default function login() {
         
         <div>
           <h1 className="text-center text-2xl font-semibold pt-4">
-            Login Form
+            View Attendance
           </h1>
         </div>
         {/* Actions */}
@@ -78,58 +77,28 @@ export default function login() {
               htmlFor="email"
               className="block text-xs font-semibold text-gray-600"
             >
-              Email:
+              Roll No:
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.name}
+              type="text"
+              id="roll_no"
+              name="roll_no"
+              value={formData.roll_no}
               onChange={handleChange}
               autoComplete="off"
               className="w-full mt-1 p-2 border rounded-md focus:outline-2 outline-cyan-200"
-              placeholder="Enter your email"
+              placeholder="Enter Roll No"
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-xs font-semibold text-gray-600"
-            >
-              Password:
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              autoComplete="off"
-              className="w-full mt-1 p-2 border rounded-md outline-cyan-200"
-              placeholder="Enter your password"
-            />
-          </div>
-          <p className="text-sm my-4">
-            Forgot password?{" "}
-            <Link href="#" className="hover:underline text-blue-700">
-              Reset
-            </Link>
-          </p>
           <div className="w-full flex justify-center">
             <button
               onClick={handleSubmit}
               className=" border-2 border-cyan-700 focus:bg-cyan-700 hover:shadow-xl shadow-slate-300 focus:text-white transition-all duration-300 text-cyan-700 px-6 py-2 rounded-full"
             >
-              Login
+              Proceed
             </button>
           </div>
         </form>
-        <p className="pb-6 text-sm">
-          Don't have an account?{" "}
-          <Link href="/register" className="hover:underline text-blue-600">
-            register
-          </Link>
-        </p>
         {/* Credits
         <Credits/> */}
       </div>

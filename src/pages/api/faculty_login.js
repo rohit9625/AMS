@@ -1,43 +1,50 @@
 require("dotenv").config();
 import pool from "@/utils/db";
-const bcrypt = require("bcrypt");
+import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
-  // GET method to logout
-  if (req.method === "GET") {
-    res.setHeader(
-      "Set-Cookie",
-      "token=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+  function decryptPassword(encryptedPassword) {
+    const decryptedBytes = CryptoJS.AES.decrypt(
+      encryptedPassword,
+      "secret-key"
     );
-
-    // Respond with a success message
-    res.status(200).json({ message: "Logout successful" });
+    const decryptedPassword = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    return decryptedPassword;
+  }
+  function compare(decryptedPassword, originalPassword) {
+    if(decryptedPassword === originalPassword){
+        return true
+    }else {
+      return false
+    }
   }
   // Check request method
-  else if (req.method === "POST") {
+  if (req.method === "POST") {
     // Collect req.body
-    const { email, password } = req.body;
+    const { userID, password } = req.body;
 
     try {
       const [userRows] = await pool.query(
-        "SELECT * FROM coordinator WHERE email = ? ",
-        [email]
+        "SELECT * FROM faculties WHERE userID = ? ",
+        [userID]
       );
       // Check if user found
       if (userRows.length > 0) {
         const user = userRows[0];
+        const decryptedPassword = decryptPassword(user.password);
+
         // If yes then check for password match
-        const passwordMatched = await bcrypt.compare(password, user.password);
+        const passwordMatched = compare(decryptedPassword, password);
         if (passwordMatched) {
           // Generate token
           const token = jwt.sign(
-            { id: user.id, name: user.name, email: user.email, userType: "coordinator" },
+            { id:user.id, name: user.name, email: user.email, userType: "faculty" },
             process.env.MY_SECRET
           );
           res.setHeader(
             "Set-Cookie",
-            `token=${token}; HttpOnly; Path=/; Expires=${new Date(
+            `token=${token}; Path=/; Expires=${new Date(
               Date.now() + 24 * 60 * 60 * 1000
             ).toUTCString()}`
           );

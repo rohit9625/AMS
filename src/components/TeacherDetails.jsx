@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 
-const TeacherDetails = ({ teacher }) => {
+const TeacherDetails = ({ faculty }) => {
   const [expanded, setExpanded] = useState(false);
   const handleExpand = () => {
     setExpanded(!expanded);
@@ -16,20 +16,20 @@ const TeacherDetails = ({ teacher }) => {
           {/* Details */}
           <div className="flex flex-col justify-center gap-1 w-1/2 max-w-[256px]">
             <div className="flex justify-between">
-              <p className="font-semibold">Age:</p>
-              <p>{teacher.age}</p>
+              <p className="font-semibold">Contact No:</p>
+              <p>{faculty.contact_no}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-semibold">Email:</p>
-              <p>{teacher.email}</p>
+              <p>{faculty.email}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-semibold">UserID:</p>
-              <p>{teacher.userID}</p>
+              <p>{faculty.userID}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-semibold">Password:</p>
-              <p>{teacher.password}</p>
+              <p>{faculty.password}</p>
             </div>
           </div>
           {/* Photo */}

@@ -9,6 +9,7 @@ export default async function handler(req, res) {
       const [attendance, attendanceFields] = await pool.query(
         `SELECT
             s.name AS subject_name,
+            s.code AS subject_code,
             COUNT(*) AS total_lectures,
             COUNT(CASE WHEN status = 'present' THEN 1 END) AS attended_lectures
           FROM attendance a
